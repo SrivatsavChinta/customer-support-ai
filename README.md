@@ -1,209 +1,290 @@
 # Customer Support AI
 
-An experiment-driven learning repository for evaluating **local LLMs** on real AI product problems.
+An experiment-driven repository for understanding how Large Language Models (LLMs) behave on a real customer support classification problem.
 
-This is **not** a production application. It is a lab: small, modular experiments that build on each other over months — starting with customer support ticket classification.
+This project is not intended to become a production customer support system.
 
----
-
-## Why this exists
-
-Shipping AI features well requires more than calling an API. You need to understand:
-
-- How prompts behave on real inputs
-- How models differ on the same task
-- How to measure quality before users see it
-- When embeddings, RAG, or human review are actually needed
-
-This repo is a place to learn those product skills hands-on, using **local models via Ollama**, with a clean Python skeleton that stays easy to extend.
-
-**Design principles**
-
-- No overengineering
-- No LangChain / LlamaIndex / FastAPI / React / Docker
-- No vector databases or RAG (yet)
-- Prompts live in files, config lives in `.env`
-- One clear module per concern
+Instead, it serves as a research playground for investigating how AI systems make decisions, where they fail, and how different techniques improve their performance.
 
 ---
 
-## Current experiment
+## Project Goal
 
-### Customer Support Ticket Classification
+The objective of this repository is to answer questions such as:
 
-**Goal:** Given a support ticket, classify it into a category and return structured JSON:
+- Can a local LLM classify customer support tickets accurately?
+- How much does prompt engineering improve performance?
+- Which local model performs best?
+- When do embeddings help?
+- When is RAG actually useful?
+- How should AI systems be evaluated?
+- When should humans remain in the loop?
 
-```json
-{
-  "category": "",
-  "confidence": 0.0,
-  "reason": ""
-}
+Rather than building features immediately, every improvement is treated as an experiment.
+
+---
+
+## Current Progress
+
+### ✅ Phase 1 – Baseline Inference
+
+Completed
+
+Current capabilities:
+
+- Local LLM inference using Ollama
+- Qwen 2.5 support
+- Customer support dataset
+- Ticket taxonomy
+- Batch inference pipeline
+- Structured JSON responses
+- Prediction exports (`run_001.csv`, `run_002.csv`)
+
+Current pipeline:
+
+```
+Customer Tickets
+        │
+        ▼
+Dataset Loader
+        │
+        ▼
+Local LLM (Qwen)
+        │
+        ▼
+Structured Prediction
+        │
+        ▼
+Prediction CSV
 ```
 
-**Status:** Project skeleton only. Classifier wiring exists; dataset loading and evaluation are intentionally not implemented yet.
+Current output:
+
+```csv
+ticket,actual_label,predicted_label,reason
+```
+
+Each execution creates a new prediction file instead of overwriting previous runs.
 
 ---
 
-## Future roadmap
+## Upcoming Work
 
-Experiments will be added incrementally, roughly in this order:
+The project will evolve through small, measurable experiments.
 
-| Stage | Focus |
-|-------|--------|
-| 1 | **Prompt Engineering** — iterate on `prompts/` and measure impact |
-| 2 | **Model Comparison** — same task, different local models |
-| 3 | **Few-shot Prompting** — add examples without changing code structure |
-| 4 | **Embeddings** — similarity and clustering experiments |
-| 5 | **RAG** — retrieval over a knowledge base |
-| 6 | **Human-in-the-loop** — review, correct, and feed labels back |
-| 7 | **AI Evaluation** — richer metrics, error analysis, reports |
+### Phase 2
 
-Each stage should land as a small, reviewable change — not a rewrite.
+Evaluation
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- Confusion Matrix
 
 ---
 
-## Prerequisites
+### Phase 3
 
-- Python 3.10+
-- [Ollama](https://ollama.com/) installed and running locally
-- A pulled model (default: `qwen2.5:7b`)
+Failure Analysis
+
+Questions to investigate:
+
+- Which categories fail most often?
+- Why do failures occur?
+- Prompt issue or model issue?
+- Does missing context cause failures?
+
+---
+
+### Phase 4
+
+Prompt Engineering
+
+- Zero-shot
+- One-shot
+- Few-shot
+- Structured prompting
+
+Measure the impact of prompt quality.
+
+---
+
+### Phase 5
+
+Model Comparison
+
+Compare identical experiments across:
+
+- Qwen
+- Mistral
+- Gemma
+- Llama
+
+---
+
+### Phase 6
+
+Embeddings
+
+Explore:
+
+- Semantic similarity
+- Duplicate ticket detection
+- Ticket clustering
+- Trend detection
+
+---
+
+### Phase 7
+
+Retrieval Augmented Generation (RAG)
+
+Investigate:
+
+- Retrieval quality
+- Context engineering
+- Context size
+- Retrieval failures
+
+---
+
+### Phase 8
+
+Human-in-the-loop
+
+Explore confidence thresholds for:
+
+- Auto classification
+- Human review
+- Hybrid workflows
+
+---
+
+## Technology Stack
+
+- Python
+- Ollama
+- Qwen 2.5
+- pandas
+- tqdm
+- python-dotenv
+
+The project intentionally avoids heavy frameworks so the focus remains on understanding AI systems rather than tooling.
+
+---
+
+## Running the Project
+
+Clone the repository.
+
+```bash
+git clone git@github.com:SrivatsavChinta/customer-support-ai.git
+
+cd customer-support-ai
+```
+
+Create a virtual environment.
+
+```bash
+python3 -m venv .venv
+
+source .venv/bin/activate
+```
+
+Install dependencies.
+
+```bash
+pip install -r requirements.txt
+```
+
+Copy the environment variables.
+
+```bash
+cp .env.example .env
+```
+
+Download the default model.
 
 ```bash
 ollama pull qwen2.5:7b
 ```
 
----
-
-## Setup
-
-```bash
-# Clone
-git clone https://github.com/<your-username>/ai-product-lab.git
-cd ai-product-lab
-
-# Virtual environment
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-
-# Dependencies
-pip install -r requirements.txt
-
-# Environment
-cp .env.example .env
-# Edit .env if your Ollama URL or model name differs
-```
-
-Never commit `.env`. Only `.env.example` is tracked.
-
----
-
-## Run
-
-From the project root:
+Run the experiment.
 
 ```bash
 python -m src.main
 ```
 
-With no dataset yet, you should see:
-
-```
-No dataset found.
-Project setup complete.
-Next step: create the first dataset.
-```
-
-That means the skeleton is healthy: config loaded, Ollama reachable, prompt present.
-
 ---
 
-## Project structure
+## Project Structure
 
 ```
-ai-product-lab/
+customer-support-ai/
+
+├── datasets/
+│   ├── raw/
+│   │   ├── tickets_v1.csv
+│   │   └── taxonomy_v1.json
+│   └── processed/
+│
+├── outputs/
+│   ├── predictions/
+│   │   ├── run_001.csv
+│   │   └── run_002.csv
+│   ├── metrics/
+│   └── reports/
+│
+├── prompts/
+│   └── classifier.txt
+│
+├── src/
+│   ├── main.py
+│   ├── loader.py
+│   ├── classifier.py
+│   ├── evaluator.py
+│   ├── metrics.py
+│   └── utils.py
+│
+├── config.py
 ├── README.md
 ├── requirements.txt
-├── .gitignore
-├── .env.example          # Template for local config
-├── config.py             # Loads all settings from .env
-├── datasets/
-│   ├── raw/              # Source datasets (you add these later)
-│   └── processed/        # Cleaned / derived data
-├── prompts/
-│   └── classifier.txt    # Classification prompt template
-├── outputs/
-│   ├── predictions/      # Model outputs per run
-│   ├── metrics/          # Numeric evaluation results
-│   └── reports/          # Human-readable experiment notes
-└── src/
-    ├── __init__.py
-    ├── main.py           # Entry point & startup checks
-    ├── loader.py         # Dataset I/O (TODO)
-    ├── classifier.py     # Ollama-backed classify(ticket)
-    ├── evaluator.py      # Evaluation orchestration (TODO)
-    ├── metrics.py        # accuracy, precision, recall, F1, … (TODO)
-    └── utils.py          # Prompt loading, env helpers, logging
+└── .env.example
 ```
 
 ---
 
-## Configuration
+## Current Learnings
 
-Everything configurable comes from `.env` (see `.env.example`):
+Some early observations from the baseline experiment:
 
-| Variable | Purpose |
-|----------|---------|
-| `OLLAMA_BASE_URL` | Local Ollama server URL |
-| `MODEL_NAME` | Model tag (e.g. `qwen2.5:7b`) |
-| `TEMPERATURE` | Sampling temperature |
-| `TOP_P` | Nucleus sampling |
-| `MAX_TOKENS` | Max generated tokens |
-| `PROMPT_PATH` | Path to prompt template |
-| `DATASET_PATH` | Path to ticket dataset |
-| `OUTPUT_DIR` | Root for predictions / metrics / reports |
-
-`config.py` reads these via `python-dotenv`. No hardcoded secrets or model settings in source.
+- Local LLMs can successfully classify customer support tickets.
+- Models often understand the intent but do not always follow a predefined taxonomy.
+- Prompt quality significantly influences structured outputs.
+- Building an evaluation pipeline is essential before comparing models.
 
 ---
 
-## How experiments will be added
+## Roadmap
 
-1. **Add or change a prompt** under `prompts/` — do not hardcode prompts in Python.
-2. **Add a dataset** under `datasets/raw/` when ready (none ships with this skeleton).
-3. **Extend `loader.py`** to read that format.
-4. **Run classification** via `classifier.classify`.
-5. **Wire `evaluator.py` / `metrics.py`** once labels exist.
-6. **Write results** under `outputs/` and note findings in `outputs/reports/`.
-
-Prefer new files or small modules over growing a single script. Keep each experiment’s “why” in a short report so the lab stays readable months later.
-
----
-
-## Classifier API (ready)
-
-```python
-from src.classifier import classify
-
-result = classify("I was charged twice for my subscription.")
-# -> {"category": "...", "confidence": 0.0, "reason": "..."}
-```
-
-Requires Ollama running and the model named in `.env` to be available locally.
+- [x] Project setup
+- [x] Local LLM integration
+- [x] Customer support dataset
+- [x] Baseline inference pipeline
+- [ ] Evaluation pipeline
+- [ ] Failure analysis
+- [ ] Prompt engineering
+- [ ] Model comparison
+- [ ] Embeddings
+- [ ] RAG
+- [ ] Human-in-the-loop
+- [ ] Final benchmark report
 
 ---
 
-## What is intentionally missing
+## Purpose
 
-- No sample / fake ticket dataset
-- No evaluation implementation yet
-- No RAG, embeddings, or vector DB
-- No web UI or API server
+This repository is less about building customer support software and more about learning how AI systems behave.
 
-Those come later, as explicit experiments — not as premature infrastructure.
-
----
-
-## License
-
-Add a license when you publish the repository publicly (e.g. MIT).
+The end goal is to develop a practical understanding of designing, evaluating, and improving AI-powered product experiences through iterative experimentation.
