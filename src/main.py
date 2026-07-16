@@ -52,7 +52,7 @@ def print_banner(num_tickets: int) -> None:
     """Print the experiment startup banner."""
     print()
     print("======================================")
-    print("AI Product Lab")
+    print("Customer Support AI")
     print("======================================")
     print()
     print(f"Model: {config.model_name}")
