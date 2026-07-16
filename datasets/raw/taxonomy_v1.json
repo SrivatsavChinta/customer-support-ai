@@ -1,0 +1,12 @@
+{
+    "Battery": "Battery health, charging and battery backup issues",
+    "Display": "Screen flickering, dead pixels, brightness, panel issues",
+    "Keyboard": "Keyboard, touchpad and input device issues",
+    "Performance": "Slow performance, overheating, lag",
+    "Power": "Won't turn on, random shutdowns, boot issues",
+    "Shipping": "Delivery, tracking and logistics",
+    "Refund": "Returns, cancellations and refunds",
+    "Warranty": "Warranty claims and replacements",
+    "Payment": "Payment failures and invoices",
+    "Other": "Anything that doesn't fit the above"
+  }
