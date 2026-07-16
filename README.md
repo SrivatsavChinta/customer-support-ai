@@ -1,4 +1,4 @@
-# AI Product Lab
+# Customer Support AI
 
 An experiment-driven learning repository for evaluating **local LLMs** on real AI product problems.
 
